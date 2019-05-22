@@ -8,6 +8,7 @@ import java.util.Iterator;
 public class SnakePanel extends JPanel {
 
     private Snake snake;
+    private SnakeListener listener;
 
     public SnakePanel() {
         setFocusable(true);
@@ -20,7 +21,6 @@ public class SnakePanel extends JPanel {
 
            @Override
            public void keyPressed(KeyEvent e) {
-               System.out.println("click");
                if (e.getKeyCode() == KeyEvent.VK_RIGHT ) {
                    snake.move(Snake.Direction.RIGHT);
                }
@@ -33,6 +33,15 @@ public class SnakePanel extends JPanel {
                else if(e.getKeyCode() == KeyEvent.VK_DOWN) {
                    snake.move(Snake.Direction.DOWN);
                }
+               if(checkWallHit()) {
+                   System.out.println("Wall Hit");
+                   listener.lifeLost();
+               }
+               if(checkBodyHit()) {
+                   System.out.println("Body Hit");
+                   listener.lifeLost();
+               }
+
                repaint();
            }
 
@@ -67,6 +76,44 @@ public class SnakePanel extends JPanel {
             g2.fillRect(p.getX(), p.getY(), SnakePart.SIZE, SnakePart.SIZE);
             counter++;
         }
+    }
+
+    public boolean checkWallHit() {
+        int x = snake.getHeadX();
+        int y = snake.getHeadY();
+
+        if(x <= 0 || y <= 0 || x+SnakePart.SIZE >= this.getWidth() ||
+                y+SnakePart.SIZE >= this.getHeight()) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+
+    public boolean checkBodyHit() {
+        int x = snake.getHeadX();
+        int y = snake.getHeadY();
+        ArrayList<SnakePart> parts = snake.getParts();
+
+        Iterator<SnakePart> iter = parts.iterator();
+
+        int i = 0;
+        while(iter.hasNext()) {
+            SnakePart p = iter.next();
+            if(i > 0) {
+                if(p.getX() == x && p.getY() == y) {
+                    return true;
+                }
+            }
+            i++;
+        }
+        return false;
+    }
+
+    public void addSnakeListener(SnakeListener listener) {
+        this.listener = listener;
     }
 
 }

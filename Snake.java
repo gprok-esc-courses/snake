@@ -15,7 +15,7 @@ public class Snake {
         int x = 200;
         int y = 200;
 
-        for(int i = 0; i < 5; i++) {
+        for(int i = 0; i < 10; i++) {
             SnakePart part = new SnakePart(x, y);
             parts.add(part);
             x -= SnakePart.SIZE;
@@ -61,5 +61,15 @@ public class Snake {
 
     public ArrayList<SnakePart> getParts() {
         return parts;
+    }
+
+
+    public int getHeadX() {
+        return parts.get(0).getX();
+    }
+
+
+    public int getHeadY() {
+        return parts.get(0).getY();
     }
 }

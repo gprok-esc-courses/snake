@@ -1,4 +1,4 @@
-public class Game {
+public class Game implements SnakeListener {
 
     private int lives;
     private int score;
@@ -22,5 +22,16 @@ public class Game {
 
     public void addScore(int value) {
         this.score += value;
+    }
+
+    @Override
+    public void lifeLost() {
+        decreaseLives();
+        System.out.println("Lives: " + lives);
+    }
+
+    @Override
+    public void giftEaten() {
+        addScore(10);
     }
 }
